@@ -1,0 +1,33 @@
+<script type="text/javascript">
+    RED.nodes.registerType('telldus-gateway',{
+        category: 'config',
+        defaults: {
+            name: {value:"", required:true},
+            ip: {value:"localhost",required:true},
+            accessKey: {value:"",required:true}
+        },
+        label: function() {
+            return "Gateway";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="telldus-gateway">
+    <div class="form-row">
+            <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
+            <input type="text" id="node-config-input-name">
+        </div>
+    <div class="form-row">
+        <label for="node-config-input-ip"><i class="icon-bookmark"></i> IP</label>
+        <input type="text" id="node-config-input-ip">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-accessKey"><i class="icon-bookmark"></i> Access Key</label>
+        <input type="text" id="node-config-input-accessKey">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="telldus-gateway">
+    <p>A configuration node to connect to a telldus gateway</p>
+</script>
+

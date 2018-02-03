@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('telldus-device',{
+        category: 'Telldus',
+        color: '#a6bbcf',
+        defaults: {
+            gateway: {type:"telldus-gateway", required:true},
+            name: {value:""},
+            localId: { value:0, validate:RED.validators.number()},
+        },
+        inputs:1,
+        outputs:1,
+        label: function() {
+            return this.name||"Device";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="telldus-device">
+    <div class="form-row">
+        <label for="node-input-gateway"><i class="fa fa-globe"></i> Gateway</label>
+        <input type="text" id="node-input-gateway">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-localId"><i class="icon-tag"></i> local Id</label>
+        <input type="text" id="node-input-localId" placeholder="Local Id">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="telldus-device">
+    <p>A zwave device connected to the telldus gateway</p>
+</script>
+

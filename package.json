@@ -1,0 +1,29 @@
+{
+    "name": "node-red-contrib-telldus-zwave-v2-local",
+    "version": "1.0.o",
+    "description": "Adds on/off capability to z-wave devices connected to a telldus zwave device using the local API",
+    "dependencies": {
+      "telldus-local": "^0.0.3"
+    },
+    "devDependencies": {},
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "telldus",
+      "local",
+      "zwave",
+      "z-wave",
+      "api",
+      "device",
+      "devices"
+    ],
+    "author": "Per Brage",
+    "license": "MIT",
+    "node-red": {
+      "nodes": {
+        "device": "lib/telldus-device.js",
+        "gateway": "lib/telldus-gateway.js"
+      }
+    }
+  }
