@@ -3,11 +3,11 @@
         category: 'config',
         defaults: {
             name: {value:"", required:true},
-            ip: {value:"localhost",required:true},
-            accessKey: {value:"",required:true}
+            ip: {value:"192.168.x.x",required:true},
+            accessToken: {value:"",required:true}
         },
         label: function() {
-            return "Gateway";
+            return this.name || "Gateway";
         }
     });
 </script>
@@ -22,8 +22,8 @@
         <input type="text" id="node-config-input-ip">
     </div>
     <div class="form-row">
-        <label for="node-config-input-accessKey"><i class="icon-bookmark"></i> Access Key</label>
-        <input type="text" id="node-config-input-accessKey">
+        <label for="node-config-input-accessToken"><i class="icon-bookmark"></i> Access Token</label>
+        <input type="text" id="node-config-input-accessToken">
     </div>
 </script>
 

@@ -1,14 +1,17 @@
 <script type="text/javascript">
     RED.nodes.registerType('telldus-device',{
         category: 'Telldus',
-        color: '#a6bbcf',
+        color: '#FFFFFF',
         defaults: {
             gateway: {type:"telldus-gateway", required:true},
             name: {value:""},
             localId: { value:0, validate:RED.validators.number()},
         },
+        icon: "telldusicon.png",
+        paletteLabel: "Device",
         inputs:1,
-        outputs:1,
+        outputs:0,
+        inputLabels: "Send msg.payload 'on' or 'off' to turn on/off a device.",
         label: function() {
             return this.name||"Device";
         }
