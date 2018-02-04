@@ -4,8 +4,8 @@
         color: '#FFFFFF',
         defaults: {
             gateway: {type:"telldus-gateway", required:true},
+            localId: { value:0, validate:RED.validators.number(), required:true},
             name: {value:""},
-            localId: { value:0, validate:RED.validators.number()},
         },
         icon: "telldusicon.png",
         paletteLabel: "Device",

@@ -4,7 +4,9 @@
         defaults: {
             name: {value:"", required:true},
             ip: {value:"192.168.x.x",required:true},
-            accessToken: {value:"",required:true}
+        },
+        credentials: {
+            accessToken: {type:"text", required:true}
         },
         label: function() {
             return this.name || "Gateway";
