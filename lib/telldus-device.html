@@ -31,9 +31,37 @@
         <label for="node-input-localId"><i class="icon-tag"></i> local Id</label>
         <input type="text" id="node-input-localId" placeholder="Local Id">
     </div>
+    <div class="form-tips"><b>Tip:</b> 
+        The local Id is not the same as the Id in Telldus Live, please check Step 4 in then <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference to find your local Ids.
+    </div>    
 </script>
 
 <script type="text/x-red" data-help-name="telldus-device">
-    <p>A zwave device connected to the telldus gateway</p>
+    <p>Control Telldus on/off devices using the local API in NodeRed</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd> input payload should contain one of the following keywords:</dd>
+        <ul>
+            <li>on</li>
+            <p> Turns the device on.</p>
+            <li>off</li>
+            <p> Turns the device off.</p>
+        </ul>
+    </dl>
+
+    <h3>Access Token</h3>
+    <p>To use this node you need to authenticate and retreive an access token to use your Telldus device's Local API.
+        Follow the instructions in this <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference.</p>
+
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local">GitHub Home</a> - github home for this node.</li>
+        <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local/issues">GitHub Issues</a> - issue reporting for this node.</li>
+        <li><a href="https://github.com/JakobPetersson/telldus-local">General NodeJS library</a> - the library this node is based on.</li>
+    </ul>
 </script>
 
