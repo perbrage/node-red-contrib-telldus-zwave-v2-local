@@ -1,35 +1,176 @@
 <script type="text/javascript">
+    var intervalObj = undefined;
     RED.nodes.registerType('telldus-gateway',{
         category: 'config',
         defaults: {
-            name: {value:"", required:true},
-            ip: {value:"192.168.x.x",required:true},
+            ip: {value:"",required:true, validate:RED.validators.regex(/(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])/)},
+            name: {value:"", required:true}
         },
         credentials: {
             accessToken: {type:"text", required:true}
         },
         label: function() {
             return this.name || "Gateway";
+        },
+        oneditprepare: function() {
+            $("#node-config-input-searchip").keyup(function() {
+                validateIP($("#node-config-input-searchip").val());
+            });
+            $("#node-config-input-searchip-find").attr('disabled', 'disabled');
+            $("#node-config-input-searchip-find").click(function() {
+                disableAuthorization();
+                var ip = $("#node-config-input-searchip").val();
+                $.post('requestToken/' + ip, function(response) {
+                    if (response.status == "success") {
+                        $("#node-config-input-searchip-status").text("Status: Gateway found, continue to authorize step");
+                        enableAuthorization(response.authUrl, ip, response.token);
+                    } else {
+                        $("#node-config-input-searchip-status").text("Status: Invalid IP adress, could not find gateway on IP");
+                        disableAuthorization();
+                    }   
+                });
+            });
+        },
+        oneditsave: function() {
+            abortInterval();
+        },
+        oneditdelete: function() {
+            abortInterval();
+        },
+        oneditcancel: function() {
+            abortInterval();
         }
+
     });
+
+    function abortInterval() {
+        try
+        {
+            clearInterval(intervalObj);
+        }
+        catch(e) {}
+    }
+
+    function enableAuthorization(authUrl, ip, requestToken) {
+        $("#node-config-authorize").attr("style", "display: inline-block;");
+        $("#node-config-authorize-wait").attr("style", "display: none;");
+        $("#node-config-authorizebtn").attr("href", authUrl);
+        $("#node-config-authorizebtn").click(function () {
+            intervalObj = setInterval(checkForAccessToken.bind(null, ip, requestToken), 700);
+        })
+        $("#node-config-authorizebtn").removeAttr('disabled');
+    }
+
+    function disableAuthorization() {
+        $("#node-config-authorize").attr("style", "display: none;");
+        $("#node-config-authorize-wait").attr("style", "display: inline-block;");
+        $("#node-config-authorizebtn").off();
+        $("#node-config-authorizebtn").attr('disabled', 'disabled');
+        abortInterval();
+    }
+
+    function checkForAccessToken(ip, requestToken) {
+        $.post('accessToken/' + ip + '/' + requestToken, function(response) {
+            $("#node-config-accesstoken-wait").text(JSON.stringify(response));
+            $("#node-config-accesstoken-wait").text(response.error);
+            
+            if (response.error == "Token is not authorized") {
+                 $("#node-config-accesstoken-wait").text("Token is not yet authorized, authorize in the opened webpage");
+            } else {
+                 clearInterval(intervalObj);
+                 $("#node-config-input-accessToken").val(response.token);
+                 $("#node-config-input-ip").val(ip);
+                 resetWizard();
+            }   
+        });
+    }
+
+    function validateIP(ip) {
+        if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)) {  
+            $("#node-config-input-searchip-status").text("Status: Valid IP entered");
+            $("#node-config-input-searchip-find").removeAttr('disabled');
+        } else {
+            $("#node-config-input-searchip-status").text("Status: Invalid IP configured");
+            $("#node-config-input-searchip-find").attr('disabled', 'disabled');
+        }
+    }
+
+    function resetWizard() {
+        $("#node-config-input-searchip").val("");
+        $("#node-config-authorize-wait").text("Waiting for IP adress verification ...");
+        $("#node-config-accesstoken-wait").text("Waiting for authorization ...");
+        $("#node-config-input-searchip-status").text("Status: Waiting for valid IP");
+        disableAuthorization();
+    }
 </script>
 
 <script type="text/x-red" data-template-name="telldus-gateway">
+    <div class='form-row' colspan="2">
+            <h3>Gateway Configuration</h3>
+            <p style="width: 550px">Below you can either use the built in wizard, that automates the process of aquiring an access token, or you
+                can manually input the ip and the access token further down. But first, you should give you gateway a name.</p>
+    </div>
+    
     <div class="form-row">
-            <label for="node-config-input-name"><i class="icon-bookmark"></i> Name</label>
-            <input type="text" id="node-config-input-name">
-        </div>
+            <label for="node-config-input-name" style="width: 110px;"><i class="icon-bookmark"></i> Name</label>
+            <input type="text" id="node-config-input-name" placeholder="Home">
+    </div>
+
+    <div class="form-row" colspan="2">
+        <h4>Automated Configuration</h4>
+    </div>
+
+    <div class='form-row' colspan="2">
+        <h5>1. Gateway IP verification </h5>
+        <p style="width: 550px">Start the wizard by entering the IP of your Telldus z-wave v2 gateway, and press the search button.</p>
+    </div>
+    
     <div class="form-row">
-        <label for="node-config-input-ip"><i class="icon-bookmark"></i> IP</label>
-        <input type="text" id="node-config-input-ip">
+        <label for="node-config-input-searchip"><i class="icon-bookmark"></i> IP lookup</label>
+        <input type="text" id="node-config-input-searchip" placeholder="192.168.1.2">
+        <a id="node-config-input-searchip-find" class="btn"><i id="node-config-input-searchip-find-icon" class="fa fa-search"></i></a>
     </div>
     <div class="form-row">
-        <label for="node-config-input-accessToken"><i class="icon-bookmark"></i> Access Token</label>
+        <p id="node-config-input-searchip-status" style="margin-left: 110px">Status: Waiting for valid IP</p>
+    </div>
+
+    <div class='form-row' colspan="2">
+            <h5>2. Authorization </h5>
+            <p id="node-config-authorize-wait" style="display: inline-block;">Waiting for IP adress verification ...</p>
+    </div>
+
+    <div class="form-row" colspan="2" style="display: none;" id="node-config-authorize">
+            <p>Click the authorize button below to open the authorization page on your gateway, and complete the following steps</p>
+            <ol>
+                <li>Login using your Telldus account</li>
+                <li>Check desired token lifespan (1m - 1y)</li>
+                <li>Check the 'Auto renew access' checkbox</li>
+                <li>Click authorize</li>
+            </ol>
+            <p> After you have clicked authorize, return to this page and find your access token populated below.</p>
+            <a target="_blank" href="" class="btn" id="node-config-authorizebtn">Authorize</a>
+    </div>
+
+    <div class='form-row' colspan="2">
+            <h5>3. Aquire Access Token </h5>
+            <p id="node-config-accesstoken-wait">Waiting for authorization ...</p>
+    </div>
+
+    <div class='form-row' colspan="2">
+            <h4>Manual Configuration</h4>
+            <p>Here you can manually input the required fields if you already have an access token available.</p>
+    </div>
+
+    <div class="form-row">
+            <label for="node-config-input-ip" style="width: 110px;"><i class="icon-bookmark"></i> IP</label>
+            <input type="text" id="node-config-input-ip" placeholder="192.168.1.2">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-accessToken" style="width: 110px;"><i class="icon-bookmark"></i> Access Token</label>
         <input type="text" id="node-config-input-accessToken">
     </div>
-</script>
-
-<script type="text/x-red" data-help-name="telldus-gateway">
-    <p>A configuration node to connect to a telldus gateway</p>
+    <div class="form-tips"><b>Tip:</b> 
+        For manual configuration, follow the instructions in this <a target="_blank" href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference.
+    </div>
 </script>
 
