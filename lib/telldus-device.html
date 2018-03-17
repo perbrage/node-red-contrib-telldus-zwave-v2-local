@@ -28,6 +28,8 @@
                     $("#node-lookup-localId-icon").attr('disabled', 'disabled');
                     $("#node-lookup-localId").off();
                 } else {
+                    $.post('gateway/' + this.value, function(data) {
+                    });
                     $("#node-input-name").removeAttr('disabled');
                     $("#node-input-localId").removeAttr('disabled');
                     $("#node-lookup-localId").removeAttr('disabled');
