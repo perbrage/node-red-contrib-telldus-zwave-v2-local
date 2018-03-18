@@ -44,6 +44,9 @@
                     $("#node-lookup-localId").off();
                 } else {
                     $.post(nodeId + '/gateway/' + this.value, function(data) {
+                    })
+                    .fail(function(error) {
+                        alert("This node needs to be deployed before any further configuration can be done");
                     });
                     $("#node-input-name").removeAttr('disabled');
                     $("#node-input-localId").removeAttr('disabled');
@@ -67,6 +70,12 @@
                                     return false;
                                 }
                             }).autocomplete("search","");
+                        })
+                        .error(function(error) {
+                            $("#node-lookup-localId-icon").addClass('fa-search');
+                            $("#node-lookup-localId-icon").removeClass('spinner');
+                            $("#node-lookup-localId").removeClass('disabled');
+                            alert("This node needs to be deployed before any further configuration can be done");
                         });
                     });
                 }
