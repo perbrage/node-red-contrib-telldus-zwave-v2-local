@@ -1,21 +1,34 @@
 <script type="text/javascript">
-    RED.nodes.registerType('telldus-device',{
+    RED.nodes.registerType('telldus-sensor',{
         category: 'Telldus',
         color: '#FFFFFF',
         defaults: {
             gateway: { type:"telldus-gateway", required:true },
             localId: { value:0, validate:RED.validators.number(), required:true },
             name: {value:""},
+            interval: {value:"", validate:RED.validators.number(), required:true}
         },
         icon: "telldusicon.png",
-        align: 'right',
-        paletteLabel: "Device",
-        inputs:1,
-        outputs:0,
-        inputLabels: "Send msg.payload 'on' or 'off' to turn on/off a device.",
+        align: 'left',
+        paletteLabel: "Sensor",
+        inputs:0,
+        outputs:1,
         label: function() {
-            return this.name||"Device";
+            return this.name||"Sensor";
         },
+        // button: {
+        //     toggle: "active",
+        //     onclick: function() {
+        //         var label = this.name||"debug";
+        //         var node = this;
+
+        //         node.changed = true;
+        //         node.dirty = true;
+        //         RED.nodes.dirty(true);
+
+        //         RED.view.redraw();
+        //     }
+        // },
         oneditprepare: function() {
             var nodeId = this.id;
             try {
@@ -41,7 +54,7 @@
                         $("#node-lookup-localId-icon").removeClass('fa-search');
                         $("#node-lookup-localId-icon").addClass('spinner');
                         $("#node-lookup-localId").addClass('disabled');
-                        $.getJSON(nodeId+ '/devices',function(data) {
+                        $.getJSON(nodeId + '/sensors',function(data) {
                             $("#node-lookup-localId-icon").addClass('fa-search');
                             $("#node-lookup-localId-icon").removeClass('spinner');
                             $("#node-lookup-localId").removeClass('disabled');
@@ -62,7 +75,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="telldus-device">
+<script type="text/x-red" data-template-name="telldus-sensor">
     <div class="form-row">
         <label for="node-input-gateway"><i class="fa fa-globe"></i> Gateway</label>
         <input type="text" id="node-input-gateway">
@@ -76,38 +89,16 @@
         <input type="text" id="node-input-localId" placeholder="Local Id" style="width:60%">
         <a id="node-lookup-localId" class="btn"><i id="node-lookup-localId-icon" class="fa fa-search"></i></a>
     </div>
+    <div class="form-row">
+            <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
+            <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
+    </div>
     <div class="form-tips"><b>Tip:</b> 
         The local Id is not the same as the Id in Telldus Live, please check Step 4 in then <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference to find your local Ids.
     </div>
 
 </script>
 
-<script type="text/x-red" data-help-name="telldus-device">
-    <p>Control Telldus on/off devices using the local API in NodeRed</p>
-
-    <h3>Inputs</h3>
-    <dl class="message-properties">
-        <dt>payload
-            <span class="property-type">string</span>
-        </dt>
-        <dd> input payload should contain one of the following keywords:</dd>
-        <ul>
-            <li>on</li>
-            <p> Turns the device on.</p>
-            <li>off</li>
-            <p> Turns the device off.</p>
-        </ul>
-    </dl>
-
-    <h3>Access Token</h3>
-    <p>To use this node you need to authenticate and retreive an access token to use your Telldus device's Local API.
-        Follow the instructions in this <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference.</p>
-
-    <h3>References</h3>
-    <ul>
-        <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local">GitHub Home</a> - github home for this node.</li>
-        <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local/issues">GitHub Issues</a> - issue reporting for this node.</li>
-        <li><a href="https://github.com/JakobPetersson/telldus-local">General NodeJS library</a> - the library this node is based on.</li>
-    </ul>
+<script type="text/x-red" data-help-name="telldus-sensor">
+    <p> Sensor help </p>
 </script>
-
