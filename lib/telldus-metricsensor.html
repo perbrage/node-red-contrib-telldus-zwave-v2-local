@@ -31,6 +31,7 @@
         // },
         oneditprepare: function() {
             var nodeId = this.id;
+
             try {
                 $("#node-input-localId").autocomplete( "destroy" );
             } catch(err) { }
@@ -48,7 +49,6 @@
                     $("#node-input-localId").removeAttr('disabled');
                     $("#node-lookup-localId").removeAttr('disabled');
                     $("#node-lookup-localId-icon").removeAttr('disabled');
-
                     $("#node-lookup-localId").click(function() {
                         $("#node-lookup-localId-icon").removeClass('fa-search');
                         $("#node-lookup-localId-icon").addClass('spinner');
@@ -89,7 +89,7 @@
                 $("#node-lookup-localId-icon").addClass('fa-search');
                 $("#node-lookup-localId-icon").removeClass('spinner');
                 $("#node-lookup-localId").removeClass('disabled');
-                alert("An error occured, could not find any devices. Try adding a Local ID manually");
+                alert("An error occured, could not find any sensors. Try adding a Local ID manually");
             });
     }
 
