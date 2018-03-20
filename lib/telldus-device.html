@@ -41,27 +41,6 @@
                         $("#node-lookup-localId-icon").addClass('spinner');
                         $("#node-lookup-localId").addClass('disabled');
                         getDevices(configNodeId, true);
-                        // $.getJSON('devices',function(data) {
-                        //     $("#node-lookup-localId-icon").addClass('fa-search');
-                        //     $("#node-lookup-localId-icon").removeClass('spinner');
-                        //     $("#node-lookup-localId").removeClass('disabled');
-                        //     $("#node-input-localId").autocomplete({
-                        //         source:data,
-                        //         minLength:0,
-                        //         select: function(event, ui) { 
-                        //             $("#node-input-localId").val(ui.item.value);
-                        //             $("#node-input-name").val(ui.item.label);
-                        //             return false;
-                        //         }
-                        //     }).autocomplete("search","");
-                        // })
-                        // .error(function(error) {
-                        //     alert(JSON.stringify(error));
-                        //     $("#node-lookup-localId-icon").addClass('fa-search');
-                        //     $("#node-lookup-localId-icon").removeClass('spinner');
-                        //     $("#node-lookup-localId").removeClass('disabled');
-                        //     alert("This node needs to be deployed before any further configuration can be done");
-                        // });
                     });
                 }
             });
