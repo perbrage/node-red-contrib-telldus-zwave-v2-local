@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('telldus-sensor',{
+    RED.nodes.registerType('telldus-metricsensor',{
         category: 'Telldus',
         color: '#FFFFFF',
         defaults: {
@@ -10,11 +10,11 @@
         },
         icon: "telldusicon.png",
         align: 'left',
-        paletteLabel: "Sensor",
+        paletteLabel: "metric-sensor",
         inputs:0,
         outputs:1,
         label: function() {
-            return this.name||"Sensor";
+            return this.name||"metric-sensor";
         },
         // button: {
         //     toggle: "active",
@@ -84,7 +84,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="telldus-sensor">
+<script type="text/x-red" data-template-name="telldus-metricsensor">
     <div class="form-row">
         <label for="node-input-gateway"><i class="fa fa-globe"></i> Gateway</label>
         <input type="text" id="node-input-gateway">
@@ -108,6 +108,6 @@
 
 </script>
 
-<script type="text/x-red" data-help-name="telldus-sensor">
+<script type="text/x-red" data-help-name="telldus-metricsensor">
     <p> Sensor help </p>
 </script>

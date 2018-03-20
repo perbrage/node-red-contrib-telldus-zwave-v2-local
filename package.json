@@ -16,7 +16,11 @@
     "z-wave",
     "api",
     "device",
-    "devices"
+    "devices",
+    "sensor",
+    "sensors",
+    "metric",
+    "metrics"
   ],
   "author": "Per Brage",
   "license": "MIT",
@@ -31,7 +35,8 @@
     "nodes": {
       "device": "lib/telldus-device.js",
       "gateway": "lib/telldus-gateway.js",
-      "sensor": "lib/telldus-sensor.js"
+      "metricsensor": "lib/telldus-metricsensor.js",
+      "switchsensor": "lib/telldus-switchsensor.js"
     }
   }
 }

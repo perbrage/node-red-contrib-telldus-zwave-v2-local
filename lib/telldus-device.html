@@ -9,66 +9,97 @@
         },
         icon: "telldusicon.png",
         align: 'right',
-        paletteLabel: "Device",
+        paletteLabel: "device",
         inputs:1,
         outputs:0,
         inputLabels: "Send msg.payload 'on' or 'off' to turn on/off a device.",
         label: function() {
-            return this.name||"Device";
+            return this.name||"device";
         },
         oneditprepare: function() {
             var nodeId = this.id;
+
             try {
                 $("#node-input-localId").autocomplete( "destroy" );
             } catch(err) { }
 
             $("#node-input-gateway").change(function() {
-                if (this.value == '_ADD_') {
+                var configNodeId = this.value;
+                if (configNodeId == '_ADD_') {
                     $("#node-input-name").attr('disabled', 'disabled');
                     $("#node-input-localId").attr('disabled', 'disabled');
                     $("#node-lookup-localId").attr('disabled', 'disabled');
                     $("#node-lookup-localId-icon").attr('disabled', 'disabled');
                     $("#node-lookup-localId").off();
                 } else {
-                    $.post(nodeId + '/gateway/' + this.value, function(data) {
-                    })
-                    .fail(function(error) {
-                        alert("This node needs to be deployed before any further configuration can be done");
-                    });
                     $("#node-input-name").removeAttr('disabled');
                     $("#node-input-localId").removeAttr('disabled');
                     $("#node-lookup-localId").removeAttr('disabled');
                     $("#node-lookup-localId-icon").removeAttr('disabled');
-
                     $("#node-lookup-localId").click(function() {
                         $("#node-lookup-localId-icon").removeClass('fa-search');
                         $("#node-lookup-localId-icon").addClass('spinner');
                         $("#node-lookup-localId").addClass('disabled');
-                        $.getJSON(nodeId+ '/devices',function(data) {
-                            $("#node-lookup-localId-icon").addClass('fa-search');
-                            $("#node-lookup-localId-icon").removeClass('spinner');
-                            $("#node-lookup-localId").removeClass('disabled');
-                            $("#node-input-localId").autocomplete({
-                                source:data,
-                                minLength:0,
-                                select: function(event, ui) { 
-                                    $("#node-input-localId").val(ui.item.value);
-                                    $("#node-input-name").val(ui.item.label);
-                                    return false;
-                                }
-                            }).autocomplete("search","");
-                        })
-                        .error(function(error) {
-                            $("#node-lookup-localId-icon").addClass('fa-search');
-                            $("#node-lookup-localId-icon").removeClass('spinner');
-                            $("#node-lookup-localId").removeClass('disabled');
-                            alert("This node needs to be deployed before any further configuration can be done");
-                        });
+                        getDevices(configNodeId, true);
+                        // $.getJSON('devices',function(data) {
+                        //     $("#node-lookup-localId-icon").addClass('fa-search');
+                        //     $("#node-lookup-localId-icon").removeClass('spinner');
+                        //     $("#node-lookup-localId").removeClass('disabled');
+                        //     $("#node-input-localId").autocomplete({
+                        //         source:data,
+                        //         minLength:0,
+                        //         select: function(event, ui) { 
+                        //             $("#node-input-localId").val(ui.item.value);
+                        //             $("#node-input-name").val(ui.item.label);
+                        //             return false;
+                        //         }
+                        //     }).autocomplete("search","");
+                        // })
+                        // .error(function(error) {
+                        //     alert(JSON.stringify(error));
+                        //     $("#node-lookup-localId-icon").addClass('fa-search');
+                        //     $("#node-lookup-localId-icon").removeClass('spinner');
+                        //     $("#node-lookup-localId").removeClass('disabled');
+                        //     alert("This node needs to be deployed before any further configuration can be done");
+                        // });
                     });
                 }
             });
         }
     });
+
+    async function getDevices(configNodeId, firstAttempt) {
+        var url = '';
+        if (firstAttempt)
+            url ='devices';
+        else
+            url ='devices/' + configNodeId;
+
+        await $.getJSON(url,function(data) {
+                $("#node-lookup-localId-icon").addClass('fa-search');
+                $("#node-lookup-localId-icon").removeClass('spinner');
+                $("#node-lookup-localId").removeClass('disabled');
+                $("#node-input-localId").autocomplete({
+                    source:data,
+                    minLength:0,
+                    select: function(event, ui) { 
+                        $("#node-input-localId").val(ui.item.value);
+                        $("#node-input-name").val(ui.item.label);
+                        return false;
+                    }
+                }).autocomplete("search","");
+            })
+            .error(function(error) {
+                if (firstAttempt) {
+                    getDevices(configNodeId, false);
+                    return;
+                }
+                $("#node-lookup-localId-icon").addClass('fa-search');
+                $("#node-lookup-localId-icon").removeClass('spinner');
+                $("#node-lookup-localId").removeClass('disabled');
+                alert("An error occured, could not find any devices. Try adding a Local ID manually");
+            });
+    }
 </script>
 
 <script type="text/x-red" data-template-name="telldus-device">

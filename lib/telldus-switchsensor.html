@@ -1,0 +1,113 @@
+<script type="text/javascript">
+    RED.nodes.registerType('telldus-switchsensor',{
+        category: 'Telldus',
+        color: '#FFFFFF',
+        defaults: {
+            gateway: { type:"telldus-gateway", required:true },
+            localId: { value:0, validate:RED.validators.number(), required:true },
+            name: {value:""},
+            interval: {value:"", validate:RED.validators.number(), required:true}
+        },
+        icon: "telldusicon.png",
+        align: 'left',
+        paletteLabel: "switch-sensor",
+        inputs:0,
+        outputs:1,
+        label: function() {
+            return this.name||"switch-sensor";
+        },
+        // button: {
+        //     toggle: "active",
+        //     onclick: function() {
+        //         var label = this.name||"debug";
+        //         var node = this;
+
+        //         node.changed = true;
+        //         node.dirty = true;
+        //         RED.nodes.dirty(true);
+
+        //         RED.view.redraw();
+        //     }
+        // },
+        oneditprepare: function() {
+            var nodeId = this.id;
+            try {
+                $("#node-input-localId").autocomplete( "destroy" );
+            } catch(err) { }
+
+            $("#node-input-gateway").change(function() {
+                if (this.value == '_ADD_') {
+                    $("#node-input-name").attr('disabled', 'disabled');
+                    $("#node-input-localId").attr('disabled', 'disabled');
+                    $("#node-lookup-localId").attr('disabled', 'disabled');
+                    $("#node-lookup-localId-icon").attr('disabled', 'disabled');
+                    $("#node-lookup-localId").off();
+                } else {
+                    $.post(nodeId + '/gateway/' + this.value, function(data) {
+                    })
+                    .fail(function(error) {
+                        alert("This node needs to be deployed before any further configuration can be done");
+                    });
+                    $("#node-input-name").removeAttr('disabled');
+                    $("#node-input-localId").removeAttr('disabled');
+                    $("#node-lookup-localId").removeAttr('disabled');
+                    $("#node-lookup-localId-icon").removeAttr('disabled');
+
+                    $("#node-lookup-localId").click(function() {
+                        $("#node-lookup-localId-icon").removeClass('fa-search');
+                        $("#node-lookup-localId-icon").addClass('spinner');
+                        $("#node-lookup-localId").addClass('disabled');
+                        $.getJSON(nodeId + '/sensors',function(data) {
+                            $("#node-lookup-localId-icon").addClass('fa-search');
+                            $("#node-lookup-localId-icon").removeClass('spinner');
+                            $("#node-lookup-localId").removeClass('disabled');
+                            $("#node-input-localId").autocomplete({
+                                source:data,
+                                minLength:0,
+                                select: function(event, ui) { 
+                                    $("#node-input-localId").val(ui.item.value);
+                                    $("#node-input-name").val(ui.item.label);
+                                    return false;
+                                }
+                            }).autocomplete("search","");
+                        })
+                        .error(function(error) {
+                            $("#node-lookup-localId-icon").addClass('fa-search');
+                            $("#node-lookup-localId-icon").removeClass('spinner');
+                            $("#node-lookup-localId").removeClass('disabled');
+                            alert("This node needs to be deployed before any further configuration can be done");
+                        });
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="telldus-switchsensor">
+    <div class="form-row">
+        <label for="node-input-gateway"><i class="fa fa-globe"></i> Gateway</label>
+        <input type="text" id="node-input-gateway">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-localId"><i class="icon-tag"></i> Local Id</label>
+        <input type="text" id="node-input-localId" placeholder="Local Id" style="width:60%">
+        <a id="node-lookup-localId" class="btn"><i id="node-lookup-localId-icon" class="fa fa-search"></i></a>
+    </div>
+    <div class="form-row">
+            <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
+            <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
+    </div>
+    <div class="form-tips"><b>Tip:</b> 
+        The local Id is not the same as the Id in Telldus Live, please check Step 4 in then <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference to find your local Ids.
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="telldus-switchsensor">
+    <p> Sensor help </p>
+</script>
