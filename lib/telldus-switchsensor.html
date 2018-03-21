@@ -30,43 +30,60 @@
         //     }
         // },
         oneditprepare: function() {
-            var nodeId = this.id;
-
             try {
                 $("#node-input-localId").autocomplete( "destroy" );
             } catch(err) { }
 
-            $("#node-input-gateway").change(function() {
-                var configNodeId = this.value;
-                if (configNodeId == '_ADD_') {
-                    $("#node-input-name").attr('disabled', 'disabled');
-                    $("#node-input-localId").attr('disabled', 'disabled');
-                    $("#node-lookup-localId").attr('disabled', 'disabled');
-                    $("#node-lookup-localId-icon").attr('disabled', 'disabled');
-                    $("#node-lookup-localId").off();
-                } else {
-                    $("#node-input-name").removeAttr('disabled');
-                    $("#node-input-localId").removeAttr('disabled');
-                    $("#node-lookup-localId").removeAttr('disabled');
-                    $("#node-lookup-localId-icon").removeAttr('disabled');
-                   
-                    $("#node-lookup-localId").click(function() {
-                        $("#node-lookup-localId-icon").removeClass('fa-search');
-                        $("#node-lookup-localId-icon").addClass('spinner');
-                        $("#node-lookup-localId").addClass('disabled');
-                        getSwitchSensors(configNodeId, true);
-                    });
-                }
+            $("#node-lookup-localId").click(function() {
+                var configNodeId = $("#node-input-gateway").val();
+
+                if (configNodeId == '_ADD_')
+                    return;
+
+                searchSwitchSensors(configNodeId);
+            });
+
+            $("#node-input-gateway").on('change', function() {
+                enableOrDisableForm(this.value);
             });
         }
     });
 
-    async function getSwitchSensors(configNodeId, firstAttempt) {
-        var url = '';
-        if (firstAttempt)
-            url ='switchSensors';
-        else
-            url ='switchSensors/' + configNodeId;
+    function searchSwitchSensors(configNodeId) {
+        $("#node-lookup-localId-icon").removeClass('fa-search');
+        $("#node-lookup-localId-icon").addClass('spinner');
+        $("#node-lookup-localId").addClass('disabled');
+        var configNode = RED.nodes.node(configNodeId);
+        if (configNode.credentials) {
+            getSwitchSensors({ "ip": configNode.ip, "accessToken": configNode.credentials.accessToken});
+        }
+        else {
+            $.getJSON('gateway/' + configNodeId, function(response) {
+                getSwitchSensors(response);
+            })
+            .error(function (error) {
+                alert("Could not connected to gateway, check your gateway configuration!");
+            });
+        }
+    }
+
+    function enableOrDisableForm(value) {
+        if (value == '_ADD_') {
+            $("#node-input-name").attr('disabled', 'disabled');
+            $("#node-input-localId").attr('disabled', 'disabled');
+            $("#node-lookup-localId").attr('disabled', 'disabled');
+            $("#node-lookup-localId-icon").attr('disabled', 'disabled');
+        } else {
+            $("#node-input-name").removeAttr('disabled');
+            $("#node-input-localId").removeAttr('disabled');
+            $("#node-lookup-localId").removeAttr('disabled');
+            $("#node-lookup-localId-icon").removeAttr('disabled');
+        }
+    }
+
+    async function getSwitchSensors(configuration) {
+       
+       var url ='switchSensors/' + configuration.ip + '/' + configuration.accessToken;
 
         await $.getJSON(url,function(data) {
                 $("#node-lookup-localId-icon").addClass('fa-search');
@@ -83,10 +100,6 @@
                 }).autocomplete("search","");
             })
             .error(function(error) {
-                if (firstAttempt) {
-                    getSwitchSensors(configNodeId, false);
-                    return;
-                }
                 $("#node-lookup-localId-icon").addClass('fa-search');
                 $("#node-lookup-localId-icon").removeClass('spinner');
                 $("#node-lookup-localId").removeClass('disabled');

@@ -32,21 +32,7 @@
             });
         },
         oneditsave: function() {
-            var id = this.id;
-            var token = $("#node-config-input-accessToken").val();
-            var ip = $("#node-config-input-ip").val();
-
-            if (id == undefined || 
-                ip == undefined || 
-                token == undefined )
-                return;
-
-            $.post('gateways/' + id + '/' + ip + '/' + token, function(data) {
-                //alert(data);
-            })
-            .fail(function(error) {
-                alert("Could not add gateway configuration");
-            });
+            abortInterval();
         },
         oneditdelete: function() {
             abortInterval();
