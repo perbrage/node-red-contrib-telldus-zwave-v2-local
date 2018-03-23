@@ -74,11 +74,13 @@
             $("#node-input-localId").attr('disabled', 'disabled');
             $("#node-lookup-localId").attr('disabled', 'disabled');
             $("#node-lookup-localId-icon").attr('disabled', 'disabled');
+            $("#node-input-interval").attr('disabled', 'disabled');
         } else {
             $("#node-input-name").removeAttr('disabled');
             $("#node-input-localId").removeAttr('disabled');
             $("#node-lookup-localId").removeAttr('disabled');
             $("#node-lookup-localId-icon").removeAttr('disabled');
+            $("#node-input-interval").removeAttr('disabled');
         }
     }
 
@@ -135,5 +137,25 @@
 </script>
 
 <script type="text/x-red" data-help-name="telldus-metricsensor">
-    <p> Sensor help </p>
+    <p>A sensor node for metrics such as temperature and UV from sensors using the Telldus Local API in NodeRed</p>
+
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">array</span>
+        </dt>
+        <dd> Output is an array containing name, value and scale of each metric the sensor measures</dd>
+    </dl>
+
+    <h3>Access Token</h3>
+    <p>To use this sensor node you need to authenticate and retreive an access token to use your Telldus device's Local API.
+        You can either use the wizard that automates this process, but if you prefer to to it manually, you can follow the      
+        instructions in this <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference.</p>
+
+    <h3>References</h3>
+    <ul>
+        <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local">GitHub Home</a> - github home for this node.</li>
+        <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local/issues">GitHub Issues</a> - issue reporting for this node.</li>
+        <li><a href="https://github.com/JakobPetersson/telldus-local">General NodeJS library</a> - the library this node is based on.</li>
+    </ul>
 </script>
