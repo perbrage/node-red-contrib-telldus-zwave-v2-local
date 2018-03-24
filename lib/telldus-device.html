@@ -6,6 +6,7 @@
             gateway: { type:"telldus-gateway", required:true },
             localId: { value:0, validate:RED.validators.number(), required:true },
             name: {value:""},
+            active: {value:true}
         },
         icon: "telldusicon.png",
         align: 'right',
@@ -21,52 +22,22 @@
                 $("#node-input-localId").autocomplete( "destroy" );
             } catch(err) { }
 
-            $("#node-lookup-localId").click(function() {
-                var configNodeId = $("#node-input-gateway").val();
+            $.getScript('telldus-local/common')
+                .done(function(data, textStatus, jqxhr) {
 
-                if (configNodeId == '_ADD_')
-                    return;
+                    $("#node-lookup-localId").click(function() {
+                        var configNodeId = $("#node-input-gateway").val();
 
-                searchDevices(configNodeId);
-            });
+                        if (configNodeId != '_ADD_')
+                            telldusCommon.search(configNodeId, getDevices);
+                    });
 
-            $("#node-input-gateway").on('change', function() {
-                enableOrDisableForm(this.value);
-            });
+                    $("#node-input-gateway").on('change', function() {
+                        telldusCommon.enableOrDisableForm(this.value);
+                    });
+                });
         }
     });
-
-    function searchDevices(configNodeId) {
-        $("#node-lookup-localId-icon").removeClass('fa-search');
-        $("#node-lookup-localId-icon").addClass('spinner');
-        $("#node-lookup-localId").addClass('disabled');
-        var configNode = RED.nodes.node(configNodeId);
-        if (configNode.credentials) {
-            getDevices({ "ip": configNode.ip, "accessToken": configNode.credentials.accessToken});
-        }
-        else {
-            $.getJSON('gateway/' + configNodeId, function(response) {
-                getDevices(response);
-            })
-            .error(function (error) {
-                alert("Could not connected to gateway, check your gateway configuration!");
-            });
-        }
-    }
-
-    function enableOrDisableForm(value) {
-        if (value == '_ADD_') {
-            $("#node-input-name").attr('disabled', 'disabled');
-            $("#node-input-localId").attr('disabled', 'disabled');
-            $("#node-lookup-localId").attr('disabled', 'disabled');
-            $("#node-lookup-localId-icon").attr('disabled', 'disabled');
-        } else {
-            $("#node-input-name").removeAttr('disabled');
-            $("#node-input-localId").removeAttr('disabled');
-            $("#node-lookup-localId").removeAttr('disabled');
-            $("#node-lookup-localId-icon").removeAttr('disabled');
-        }
-    }
 
     async function getDevices(configuration) {
 
