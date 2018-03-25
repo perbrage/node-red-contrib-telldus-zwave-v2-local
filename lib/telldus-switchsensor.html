@@ -6,7 +6,8 @@
             gateway: { type:"telldus-gateway", required:true },
             localId: { value:0, validate:RED.validators.number(), required:true },
             name: {value:""},
-            interval: {value:"", validate:RED.validators.number(), required:true}
+            interval: {value:"", validate:RED.validators.number(), required:true},
+            onlyStateChange: {value:true}
         },
         icon: "telldusicon.png",
         align: 'left',
@@ -99,6 +100,9 @@
     <div class="form-row">
             <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
             <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
+    </div>
+    <div class="form-row" colspan="2">
+            <input type="checkbox" id="node-input-onlyStateChange" placeholder="true" style="width: 20px; margin-left: 100px; margin-top: 3px;"> Only send message when state changes
     </div>
     <div class="form-tips"><b>Tip:</b> 
         The local Id is not the same as the Id in Telldus Live, please check Step 4 in then <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference to find your local Ids.
