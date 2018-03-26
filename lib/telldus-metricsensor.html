@@ -7,7 +7,8 @@
             localId: { validate:RED.validators.number(), required:true},
             name: { value:"" },
             interval: { validate:RED.validators.number(), required:true},
-            active: { value:true}
+            filter: { value:""}
+            //active: { value:true}
         },
         icon: "telldusicon.png",
         align: 'left',
@@ -15,7 +16,11 @@
         inputs:0,
         outputs:1,
         label: function() {
-            return this.name||"metric-sensor";
+            var name = this.name||"metric-sensor";
+            if (this.filter != "")
+                return name + " ("+this.filter+")"||"metric-sensor";
+            else
+                return name;
         },
         // button: {
         //     toggle: "active",
@@ -111,8 +116,12 @@
             <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
             <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
     </div>
+    <div class="form-row">
+            <label for="node-input-filter"><i class="icon-tag"></i> Filter</label>
+            <input type="text" id="node-input-filter" placeholder="temp;uv">        
+    </div>
     <div class="form-tips"><b>Tip:</b> 
-        The local Id is not the same as the Id in Telldus Live, please check Step 4 in then <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference to find your local Ids.
+        Filters property is used to only output certain metrics if using a multi sensor. Leave this field empty to output all metrics. 
     </div>
 
 </script>
