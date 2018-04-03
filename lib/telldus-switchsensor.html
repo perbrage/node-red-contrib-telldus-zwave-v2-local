@@ -17,19 +17,6 @@
         label: function() {
             return this.name||"switch-sensor";
         },
-        // button: {
-        //     toggle: "active",
-        //     onclick: function() {
-        //         var label = this.name||"debug";
-        //         var node = this;
-
-        //         node.changed = true;
-        //         node.dirty = true;
-        //         RED.nodes.dirty(true);
-
-        //         RED.view.redraw();
-        //     }
-        // },
         oneditprepare: function() {
             try {
                 $("#node-input-localId").autocomplete( "destroy" );
@@ -79,8 +66,6 @@
                 alert("An error occured, could not find any sensors. Try adding a Local ID manually");
             });
     }
-
-
 </script>
 
 <script type="text/x-red" data-template-name="telldus-switchsensor">
@@ -98,16 +83,15 @@
         <a id="node-lookup-localId" class="btn"><i id="node-lookup-localId-icon" class="fa fa-search"></i></a>
     </div>
     <div class="form-row">
-            <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
-            <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
+        <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
+        <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
     </div>
     <div class="form-row" colspan="2">
-            <input type="checkbox" id="node-input-onlyStateChange" placeholder="true" style="width: 20px; margin-left: 100px; margin-top: 3px;"> Only send message when state changes
+        <input type="checkbox" id="node-input-onlyStateChange" placeholder="true" style="width: 20px; margin-left: 100px; margin-top: 3px;"> Only send message when state changes
     </div>
     <div class="form-tips"><b>Tip:</b> 
-        The local Id is not the same as the Id in Telldus Live, please check Step 4 in then <a href="http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token">Local API Authentication</a> reference to find your local Ids.
+        Using the 'Only send message when state change' together with a short interval, enables you to react when a switch sensor changes. For example, do something when the garage door opens.
     </div>
-
 </script>
 
 <script type="text/x-red" data-help-name="telldus-switchsensor">
@@ -116,9 +100,9 @@
     <h3>Output</h3>
     <dl class="message-properties">
         <dt>payload
-            <span class="property-type">array</span>
+            <span class="property-type">JSON</span>
         </dt>
-        <dd> A payload stating on or off</dd>
+        <dd> A payload containing localId, name and state</dd>
     </dl>
 
     <h3>Access Token</h3>
@@ -132,5 +116,4 @@
         <li><a href="https://github.com/perbrage/node-red-contrib-telldus-zwave-v2-local/issues">GitHub Issues</a> - issue reporting for this node.</li>
         <li><a href="https://github.com/JakobPetersson/telldus-local">General NodeJS library</a> - the library this node is based on.</li>
     </ul>
-
 </script>

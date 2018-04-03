@@ -106,25 +106,21 @@
 
 <script type="text/x-red" data-template-name="telldus-gateway">
     <div class='form-row' colspan="2">
-            <h3>Gateway Configuration</h3>
-            <p style="width: 550px">Below you can either use the built in wizard, that automates the process of aquiring an access token, or you
-                can manually input the ip and the access token further down. But first, you should give you gateway a name.</p>
+        <h3>Gateway Configuration</h3>
+        <p style="width: 550px">Below you can either use the built in wizard, that automates the process of aquiring an access token, or you
+            can manually input the ip and the access token further down. But first, you should give you gateway a name.</p>
     </div>
-    
     <div class="form-row">
-            <label for="node-config-input-name" style="width: 110px;"><i class="icon-bookmark"></i> Name</label>
-            <input type="text" id="node-config-input-name" placeholder="Home">
+        <label for="node-config-input-name" style="width: 110px;"><i class="icon-bookmark"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Home">
     </div>
-
     <div class="form-row" colspan="2">
         <h4>Automated Configuration</h4>
     </div>
-
     <div class='form-row' colspan="2">
         <h5>1. Gateway IP verification </h5>
         <p style="width: 550px">Start the wizard by entering the IP of your Telldus z-wave v2 gateway, and press the search button.</p>
-    </div>
-    
+    </div>    
     <div class="form-row">
         <label for="node-config-input-searchip"><i class="icon-bookmark"></i> IP lookup</label>
         <input type="text" id="node-config-input-searchip" placeholder="192.168.1.2">
@@ -133,37 +129,32 @@
     <div class="form-row">
         <p id="node-config-input-searchip-status" style="margin-left: 110px">Status: Waiting for valid IP</p>
     </div>
-
     <div class='form-row' colspan="2">
-            <h5>2. Authorization </h5>
-            <p id="node-config-authorize-wait" style="display: inline-block;">Waiting for IP adress verification ...</p>
+        <h5>2. Authorization </h5>
+        <p id="node-config-authorize-wait" style="display: inline-block;">Waiting for IP adress verification ...</p>
     </div>
-
     <div class="form-row" colspan="2" style="display: none;" id="node-config-authorize">
-            <p>Click the authorize button below to open the authorization page on your gateway, and complete the following steps</p>
-            <ol>
-                <li>Login using your Telldus account</li>
-                <li>Check desired token lifespan (1m - 1y)</li>
-                <li>Check the 'Auto renew access' checkbox</li>
-                <li>Click authorize</li>
-            </ol>
-            <p> After you have clicked authorize, return to this page and find your access token populated below.</p>
-            <a target="_blank" href="" class="btn" id="node-config-authorizebtn">Authorize</a>
+        <p>Click the authorize button below to open the authorization page on your gateway, and complete the following steps</p>
+        <ol>
+            <li>Login using your Telldus account</li>
+            <li>Check desired token lifespan (1m - 1y)</li>
+            <li>Check the 'Auto renew access' checkbox</li>
+            <li>Click authorize</li>
+        </ol>
+        <p> After you have clicked authorize, return to this page and find your access token populated below.</p>
+        <a target="_blank" href="" class="btn" id="node-config-authorizebtn">Authorize</a>
     </div>
-
     <div class='form-row' colspan="2">
-            <h5>3. Aquire Access Token </h5>
-            <p id="node-config-accesstoken-wait">Waiting for authorization ...</p>
+        <h5>3. Aquire Access Token </h5>
+        <p id="node-config-accesstoken-wait">Waiting for authorization ...</p>
     </div>
-
     <div class='form-row' colspan="2">
-            <h4>Manual Configuration</h4>
-            <p>Here you can manually input the required fields if you already have an access token available.</p>
+        <h4>Manual Configuration</h4>
+        <p>Here you can manually input the required fields if you already have an access token available.</p>
     </div>
-
     <div class="form-row">
-            <label for="node-config-input-ip" style="width: 110px;"><i class="icon-bookmark"></i> IP</label>
-            <input type="text" id="node-config-input-ip" placeholder="192.168.1.2">
+        <label for="node-config-input-ip" style="width: 110px;"><i class="icon-bookmark"></i> IP</label>
+        <input type="text" id="node-config-input-ip" placeholder="192.168.1.2">
     </div>
     <div class="form-row">
         <label for="node-config-input-accessToken" style="width: 110px;"><i class="icon-bookmark"></i> Access Token</label>

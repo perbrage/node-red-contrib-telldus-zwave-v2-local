@@ -8,7 +8,6 @@
             name: { value:"" },
             interval: { validate:RED.validators.number(), required:true},
             filter: { value:""}
-            //active: { value:true}
         },
         icon: "telldusicon.png",
         align: 'left',
@@ -22,33 +21,6 @@
             else
                 return name;
         },
-        // button: {
-        //     toggle: "active",
-        //     onclick: function() {
-        //         var label = this.name||"debug";
-        //         var node = this;
-                
-        //         var nodeHtml = document.getElementById(node.id);
-        //         var children = nodeHtml.childNodes;
-
-        //         if (node.active) {
-        //             children[0].setAttribute("transform", "translate(-17,2)");
-        //             RED.notify(node._("Sensor deactivated",{label:label}),"success");
-        //         } else {
-        //             children[0].setAttribute("transform", "translate(-25,2)");
-        //             RED.notify(node._("Sensor activated",{label:label}),"success");
-        //         }
-
-        //         $.post("sensors/"+this.id+"/"+(this.active?"disable":"enable"), function (response) {
-        //         });
-
-        //         // node.changed = true;
-        //         // node.dirty = true;
-        //         // RED.nodes.dirty(true);
-        //         RED.view.redraw();
-
-        //     }
-        // },
         oneditprepare: function() {
             try {
                 $("#node-input-localId").autocomplete( "destroy" );
@@ -113,17 +85,16 @@
         <a id="node-lookup-localId" class="btn"><i id="node-lookup-localId-icon" class="fa fa-search"></i></a>
     </div>
     <div class="form-row">
-            <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
-            <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
+        <label for="node-input-interval"><i class="icon-tag"></i> Interval</label>
+        <input type="text" id="node-input-interval" placeholder="Check interval in seconds">
     </div>
     <div class="form-row">
-            <label for="node-input-filter"><i class="icon-tag"></i> Filter</label>
-            <input type="text" id="node-input-filter" placeholder="temp;uv">        
+        <label for="node-input-filter"><i class="icon-tag"></i> Filter</label>
+        <input type="text" id="node-input-filter" placeholder="temp;uv">        
     </div>
     <div class="form-tips"><b>Tip:</b> 
-        Filters property is used to only output certain metrics if using a multi sensor. Leave this field empty to output all metrics. 
+        Filters property is used to only output certain metrics if using a multi sensor. Leave this field empty to output all metrics from your multi sensor. 
     </div>
-
 </script>
 
 <script type="text/x-red" data-help-name="telldus-metricsensor">
@@ -134,7 +105,7 @@
         <dt>payload
             <span class="property-type">array</span>
         </dt>
-        <dd> Output is an array containing name, value and scale of each metric the sensor measures</dd>
+        <dd> Output is an array containing elements with name, value and scale of each metric the sensor measures</dd>
     </dl>
 
     <h3>Access Token</h3>
