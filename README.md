@@ -14,24 +14,24 @@ npm install node-red-contrib-telldus-zwave-v2-local
 ```
 ## Nodes
 
-![Usage screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/usage-screenshot.png "Example usage of the nodes")
+![Usage screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/usage-screenshot.png?s=200 "Example usage of the nodes")
 
-**Device node**
+## Device node
 Control Telldus devices by sending payloads with commands. Supported commands as of now for the Device node are 'on', 'off', 'up', 'down', 'bell' and 'stop'.
 
 ![Device configuration screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/device-screenshot.png "Device configuration")
 
-**Metric Sensor node**
-The metric sensor outputs metrics from you sensors or multi sensors. Such as temperature or uv.
+## Metric Sensor node
+The metric sensor outputs metrics from you sensors or multi sensors. Such as temperature or uv. If using a multi sensor, you can filter what metrics you want to output.
 
 ![Metric Sensor configuration screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/metric-screenshot.png "Metric Sensor configuration")
 
-**Switch Sensor node**
+## Switch Sensor node
 The switch sensor outputs the state of a on/off sensor. For example a window or door sensor. This node can also be setup to only output messages when the state change.
 
 ![Switch Sensor configuration screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/switch-screenshot.png "Switch Sensor configuration")
 
-## Configuration
+## Configuration node
 The nodes share a gateway configuration that needs to be configured before any of the nodes can be used. You can either use the built in access token wizard that automates the process of retreiving an access token, or you can follow the the instruction on this page to enter them manually: [Get Access Token](http://api.telldus.net/localapi/api/authentication.html#step-1-request-a-request-token)
 
 ![Configuration screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/config-screenshot.png "Access token wizard, or use the manual configuration at the bottom")
