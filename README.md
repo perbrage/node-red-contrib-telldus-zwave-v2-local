@@ -17,7 +17,7 @@ npm install node-red-contrib-telldus-zwave-v2-local
 ![Usage screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/usage-screenshot.png?s=200 "Example usage of the nodes")
 
 ## Device node
-Control Telldus devices by sending payloads with commands. Supported commands as of now for the Device node are 'on', 'off', 'up', 'down', 'bell' and 'stop'.
+Control Telldus devices by sending payloads with commands. Supported commands as of now for the Device node are 'on', 'off', 'up', 'down', 'bell', 'stop' and 'dim(x)'.
 
 ![Device configuration screenshot](https://raw.githubusercontent.com/perbrage/node-red-contrib-telldus-zwave-v2-local/master/screenshots/device-screenshot.png "Device configuration")
 
